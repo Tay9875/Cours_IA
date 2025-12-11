@@ -59,7 +59,10 @@ let inputName = null;
 
 async function loadModel() {
   try {
-    session = await ort.InferenceSession.create("image_classifier_cnn.onnx");//await ort.InferenceSession.create("image_classifier_model.onnx");
+    session = await ort.InferenceSession.create("image_classifier_cnn_dropout.onnx");
+    //await ort.InferenceSession.create("image_classifier_cnn.onnx");
+    //await ort.InferenceSession.create("image_classifier_model.onnx");
+
     modelReady = true;
     
     // Récupérer le nom exact de l'input
