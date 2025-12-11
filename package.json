@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "onnxruntime-node": "^1.23.2",
-    "onnxruntime-web": "^1.24.0-dev.20251116-b39e144322"
+    "onnxruntime-web": "^1.24.0-dev.20251116-b39e144322",
+    "pandas": "^0.0.3"
   }
 }
