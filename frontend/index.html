@@ -1,6 +1,5 @@
  <!DOCTYPE html>
-<html>
-    <html lang="fr-FR"></html>
+<html lang="fr-FR">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width" />
@@ -14,12 +13,15 @@
     <div id="card">
         <h1>Devine le chiffre</h1>
         <p>Le chiffre, pas les nombres!</p>
-        <canvas id="canvas" width="280" height="280"></canvas>
-        <button id="clearBtn">Effacer</button><br>
-        <button id="predictBtn">Prédire</button>
-        <p id="predictionText"></p>
+        <canvas id="canvas" width="320" height="320"></canvas>
+        <div>
+            <button id="clearBtn">Effacer</button>
+            <button id="predictBtn">Prédire</button>
+        </div>
+        <p id="prediction"></p>
     </div>
 
-    <script type="module" src="index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
+    <script src="index.js"></script>
     </body>
 </html> 

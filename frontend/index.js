@@ -1,6 +1,7 @@
 // use ES6 style import syntax (recommended)
 //import * as ort from 'onnxruntime-web';
-import * as ort from "https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js";
+//import * as ort from "https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js";
+ort.env.wasm.wasmPaths = "https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/";
 
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
@@ -51,27 +52,31 @@ canvas.addEventListener("mousedown", startDrawing);
 canvas.addEventListener("mouseup", stopDrawing);
 canvas.addEventListener("mousemove", draw);
 
-let session;
+let session = null;
+let modelReady = false;
 
 async function loadModel() {
-  try{
+  try {
     session = await ort.InferenceSession.create("image_classifier_model.onnx");
-    console.log("Model chargé");
-  }catch (e) {
-        console.log(`Inference ONNX model a échoué: ${e}.`);
+    modelReady = true;
+    console.log("Modèle chargé !");
+  } catch (e) {
+    console.error("Erreur chargement modèle:", e);
   }
 }
 
 loadModel();
-console.log(session)
+console.log("Session: "+session)
+console.log("ModelReady ? "+modelReady)
+
 function preprocess(imageData) {
   const data = imageData.data;
   const gray = [];
 
-  for (let y = 0; y < 28; y++) {
-    for (let x = 0; x < 28; x++) {
-      const i = ((y * 10) * 280 + x * 10) * 4;
-      gray.push((255 - data[i]) / 255); // Inversion: blanc -> 1
+  for (let y = 0; y < 32; y++) {
+    for (let x = 0; x < 32; x++) {
+      const i = ((y * 10) * 320 + x * 10) * 4;
+      gray.push((255 - data[i]) / 255); // inversion: blanc -> 1
     }
   }
 
@@ -79,18 +84,18 @@ function preprocess(imageData) {
 }
 
 async function predict() {
-  if (!session) {
+  if (!modelReady) {
     alert("Le modèle n'est pas encore chargé !");
     return;
   }
 
   const inputTensor = new ort.Tensor(
     "float32",
-    preprocess(ctx.getImageData(0, 0, 280, 280)),
-    [1, 1, 28, 28]
+    preprocess(ctx.getImageData(0, 0, 320, 320)),
+    [1, 1, 32, 32]
   );
 
-  const output = await session.run({ input: inputTensor });
+  const output = await session.run({ x: inputTensor });
 
   const scores = output[Object.keys(output)[0]].data;
   const predicted = scores.indexOf(Math.max(...scores));
