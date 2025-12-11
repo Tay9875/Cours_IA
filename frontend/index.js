@@ -59,7 +59,8 @@ let inputName = null;
 
 async function loadModel() {
   try {
-    session = await ort.InferenceSession.create("image_classifier_cnn_dropout.onnx");
+    session = await ort.InferenceSession.create("image_classifier_tensorboard.onnx");
+    //await ort.InferenceSession.create("image_classifier_cnn_dropout.onnx");
     //await ort.InferenceSession.create("image_classifier_cnn.onnx");
     //await ort.InferenceSession.create("image_classifier_model.onnx");
 
